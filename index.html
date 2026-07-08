@@ -1294,6 +1294,7 @@ footer{background:var(--black);padding:40px 20px 32px;text-align:center;border-t
           <div style="margin-bottom:18px;border-top:1px solid var(--border);padding-top:14px;">
             <label style="font-size:10px;font-weight:700;color:var(--gray);letter-spacing:1.5px;text-transform:uppercase;display:block;margin-bottom:10px;">PAGAMENTO — PAGHIPER (PIX)</label>
             <div class="aform-row" style="margin-bottom:10px;"><label>API Key PagHiper</label><input type="text" id="sPaghiperApiKey" placeholder="apk_..."></div>
+            <div class="aform-row" style="margin-bottom:10px;"><label>Token PagHiper</label><input type="text" id="sPaghiperToken" placeholder="Token de credenciais"></div>
             <p style="font-size:10px;color:var(--gray);">Pegue em: paghiper.com/painel → Configurações → Integrações. Fica salva só no servidor, nunca aparece no site.</p>
           </div>
 
@@ -2545,6 +2546,8 @@ window.doLogin=async function(){
 
   const pgApi=document.getElementById('sPaghiperApiKey'); if(pgApi) pgApi.value=priv.paghiperApiKey||'';
 
+  const pgTok=document.getElementById('sPaghiperToken'); if(pgTok) pgTok.value=priv.paghiperToken||'';
+
 };
 
 window.switchAdminTab=function(tab,btn,preserveForm){
@@ -3134,6 +3137,10 @@ window.saveSettings=async function(){
 
   const paghiperApiKey=paghiperApiKeyEl?paghiperApiKeyEl.value.trim():undefined;
 
+  const paghiperTokenEl=document.getElementById('sPaghiperToken');
+
+  const paghiperToken=paghiperTokenEl?paghiperTokenEl.value.trim():undefined;
+
   // Collect discount tiers from the rendered rows
 
   const rows=document.querySelectorAll('#discountRows .discount-row');
@@ -3159,6 +3166,8 @@ window.saveSettings=async function(){
     const body={...settings,frenetToken,superfreteToken,melhorenvioToken};
 
     if(paghiperApiKey!==undefined)body.paghiperApiKey=paghiperApiKey;
+
+    if(paghiperToken!==undefined)body.paghiperToken=paghiperToken;
 
     const r=await fetch(BACKEND_URL+'/admin/settings',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+adminToken},body:JSON.stringify(body)});
 
