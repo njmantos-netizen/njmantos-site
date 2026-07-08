@@ -2972,6 +2972,8 @@ function _renderOrdersUI(){
 
       if(st==='pendente'||st==='aguardando_pix')actHtml+=`<button class="order-status-btn" onclick="setOrderStatus('${o.id}','pago')">✅ Confirmar Pagamento</button>`;
 
+      if(st==='aguardando_pix')actHtml+=`<button class="order-status-btn alt" onclick="njCheckPixStatus('${o.id}')">🔄 Verificar na PagHiper</button>`;
+
       if(st==='pago')actHtml+=`<button class="order-status-btn" onclick="setOrderStatus('${o.id}','preparacao')">📦 Em Preparação</button>`;
 
       if(st==='preparacao')actHtml+=`<button class="order-status-btn" onclick="setOrderStatus('${o.id}','enviado')">🚚 Marcar como Enviado</button>`;
@@ -3023,6 +3025,26 @@ function renderAdminOrders(){
 }
 
 
+
+
+
+window.njCheckPixStatus=async function(orderId){
+
+  try{
+
+    const r=await fetch(`${BACKEND_URL}/pix/status/${orderId}`);
+
+    const d=await r.json();
+
+    if(!r.ok){showToast('❌ Erro: '+(d.error||r.status));return;}
+
+    if(d.status==='pago'){showToast('✅ Confirmado! Pago de verdade.');renderAdminOrders();}
+
+    else showToast('⏳ PagHiper ainda diz: '+(d.status||'aguardando_pix'));
+
+  }catch(e){showToast('❌ Não consegui falar com o backend: '+e.message);}
+
+};
 
 
 
