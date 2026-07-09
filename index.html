@@ -3040,7 +3040,7 @@ window.njCheckPixStatus=async function(orderId){
 
     if(d.status==='pago'){showToast('✅ Confirmado! Pago de verdade.');renderAdminOrders();}
 
-    else showToast('⏳ PagHiper ainda diz: '+(d.status||'aguardando_pix'));
+    else showToast('⏳ '+(d.debug||('PagHiper ainda diz: '+(d.status||'aguardando_pix'))));
 
   }catch(e){showToast('❌ Não consegui falar com o backend: '+e.message);}
 
